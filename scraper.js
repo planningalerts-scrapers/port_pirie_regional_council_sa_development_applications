@@ -71,6 +71,15 @@ async function main() {
     console.log(`Retrieving page: ${DevelopmentApplicationsUrl}`);
     let body = await request(DevelopmentApplicationsUrl);
     let $ = cheerio.load(body);
+
+    let pdfUrls = [];
+    for (let element of $("a[href$='.pdf']").get()) {
+        let pdfUrl = new urlparser.URL(element.attribs.href, DevelopmentApplicationsUrl).href;
+        if (!pdfUrls.some(url => url === pdfUrl))
+            pdfUrls.push(pdfUrl);
+    }
+    console.log(pdfUrls);
+    console.log("Complete.");
 }
 
 main().then(() => console.log("Complete.")).catch(error => console.error(error));
