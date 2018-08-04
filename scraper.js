@@ -124,7 +124,7 @@ async function main() {
                             }
                         }
                     } else if (developmentApplication !== null) {
-                        if (text.startsWith("property house no") && row.length >= 2 && row[1].trim() !== "0") {
+                        if (text.startsWith("property house no") && row.length >= 2 && row[1].trim() !== "0" && row[1].trim().toLowerCase() !== "building conditions") {
                             developmentApplication.address += ((developmentApplication.address === "") ? "" : " ") + row[1].trim();
                         } else if (text.startsWith("property street") && row.length >= 2 && row[1].toUpperCase() === row[1] && row[1].trim() !== "0") {
                             developmentApplication.address += ((developmentApplication.address === "") ? "" : " ") + row[1].trim();
@@ -145,6 +145,12 @@ async function main() {
                     await insertRow(database, developmentApplication);
 
                 console.log(`Parsed document: ${pdfUrl}`);
+
+                // Attempt to avoid reaching 512 MB memory usage (this will otherwise result in
+                // the current process being terminated by morph.io).
+
+                if (global.gc)
+                    global.gc();
             } catch (ex) {
                 console.log("In pdfParser_dataReady catch.");
                 console.log(ex);
