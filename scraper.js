@@ -128,7 +128,7 @@ async function main() {
                             developmentApplication.address += ((developmentApplication.address === "") ? "" : " ") + row[1].trim();
                         } else if (text.startsWith("property street") && row.length >= 2 && row[1].toUpperCase() === row[1] && row[1].trim() !== "0") {
                             developmentApplication.address += ((developmentApplication.address === "") ? "" : " ") + row[1].trim();
-                        } else if (text.startsWith("property suburb") && row.length >= 2 && row[1].trim() !== "0") {
+                        } else if (text.startsWith("property suburb") && row.length >= 2 && row[1].trim() !== "0" && row[1].trim().toLowerCase() !== "lodgement fee - base amount") {
                             developmentApplication.address += ((developmentApplication.address === "") ? "" : ", ") + ((row[1].trim() === "" || row[1].toUpperCase() !== row[1]) ? "PORT PIRIE" : row[1].trim());
                         } else if (text.startsWith("development description")) {
                             isReason = true;
@@ -141,8 +141,10 @@ async function main() {
                     }
                 }
 
-                for (let developmentApplication of developmentApplications)
+                for (let developmentApplication of developmentApplications) {
+                    developmentApplication.address = developmentApplication.address.trim().replace(/\+ü/g, " ").replace(/ü/g, " ").replace(/\s\s+/g, " ");
                     await insertRow(database, developmentApplication);
+                }
 
                 console.log(`Parsed document: ${pdfUrl}`);
 
