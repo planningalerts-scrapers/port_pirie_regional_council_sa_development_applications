@@ -79,7 +79,21 @@ async function main() {
             pdfUrls.push(pdfUrl);
     }
 
-    for (let pdfUrl of pdfUrls) {
+    if (pdfUrls.length === 0) {
+        console.log("No PDF URLs were found on the page.");
+        return;
+    }
+
+    // Select the most recent PDF.  And randomly select one other PDF (avoid processing all PDFs
+    // at once because this may use too much memory, resulting in morph.io terminating the current
+    // process).
+
+    let selectedPdfUrls = [];
+    selectedPdfUrls.push(pdfUrls.shift());
+    if (pdfUrls.length > 0)
+        selectedPdfUrls.push(pdfUrls[getRandom(1, pdfUrls.length)]);
+
+    for (let pdfUrl of selectedPdfUrls) {
         console.log(`Retrieving document: ${pdfUrl}`);
 
         // Parse the PDF into a collection of PDF rows.  Each PDF row is simply an array of
@@ -159,6 +173,12 @@ async function main() {
             }
         });
     }
+}
+
+// Gets a random integer in the specified range: [minimum, maximum).
+
+function getRandom(minimum, maximum) {
+    return Math.floor(Math.random() * (Math.floor(maximum) - Math.ceil(minimum))) + Math.ceil(minimum);
 }
 
 // Convert a parsed PDF into an array of rows.  This function is based on pdf2table by Sam Decrock.
