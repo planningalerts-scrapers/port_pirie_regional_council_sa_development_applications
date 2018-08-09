@@ -12,9 +12,14 @@ let sqlite3 = require("sqlite3").verbose();
 let pdf2json = require("pdf2json");
 let urlparser = require("url");
 let moment = require("moment");
+let fs = require("fs");
 
 const DevelopmentApplicationsUrl = "http://www.pirie.sa.gov.au/page.aspx?u=646#.W2REvfZuKUl";
 const CommentUrl = "mailto:council@pirie.sa.gov.au";
+
+// Suburb names.
+
+let SuburbNamesAndPostCodes = null;
 
 // Sets up an sqlite database.
 
@@ -59,12 +64,44 @@ async function insertRow(database, developmentApplication) {
     });
 }
 
+// Format the address, ensuring that it has a valid suburb, state and post code.
+
+function formatAddress(address) {
+    address = address.trim().replace(/\s\s+/g, " ");  // replace multiple whitespace characters with a single space
+    if (address === "")
+        return address;  // cannot do anything with a blank address
+    if (address.length >= " SA NNNN".length && / SA [0-9]{4}/.test(address.substring(address.length - " SA NNNN".length)))  // for example, "SA 5240"
+        return address;
+
+    // Attempt to match a known suburb to the trailing text.
+
+    let tokens = address.trim().split(/\s+/);
+    let suburbName = "";
+    for (let index = 0; index < 4; index++) {  // keep adding to the suburb name (from the right hand side of the address) until it is recognised
+        let token = tokens.pop();
+        if (index === 0 && token === "SA")  // ignore "SA" on the end of an address such as "11 FRENCH STREET, PORT PIRIE SA"
+            continue;
+        suburbName = (token || "") + ((suburbName === "") ? "" : " ") + suburbName;
+        let suburbNameAndPostCode = SuburbNamesAndPostCodes[suburbName];
+        if (suburbNameAndPostCode)  // found a match
+            return tokens.join(" ").replace(/,$/, "") + ", " + suburbNameAndPostCode;  // expands the suburb name to a suburb name, state and post code
+    }
+
+    return address.replace(/,$/, "") + ", PORT PIRIE SA 5540";  // fallback if unrecognised
+}
+
 // Parses the development applications.
 
 async function main() {
     // Ensure that the database exists.
 
     let database = await initializeDatabase();
+
+    // Obtain all suburb names.
+
+    SuburbNamesAndPostCodes = {};
+    for (let suburbNameAndPostCode of fs.readFileSync("suburbnames.txt").toString().replace(/\r/g, "").trim().split("\n"))
+        SuburbNamesAndPostCodes[suburbNameAndPostCode.split(",")[0]] = suburbNameAndPostCode.split(",")[1];
 
     // Retrieve the page contains the links to the PDFs.
 
@@ -140,7 +177,7 @@ async function main() {
                     } else if (developmentApplication !== null) {
                         if (text.startsWith("property house no") && row.length >= 2 && row[1].trim() !== "0" && row[1].trim().toLowerCase() !== "building conditions") {
                             developmentApplication.address += ((developmentApplication.address === "") ? "" : " ") + row[1].trim();
-                        } else if (text.startsWith("property street") && row.length >= 2 && row[1].toUpperCase() === row[1] && row[1].trim() !== "0") {
+                        } else if (text.startsWith("property street") && row.length >= 2 && row[1].replace(/ü/g, " ").toUpperCase() === row[1].replace(/ü/g, " ") && row[1].trim() !== "0") {
                             developmentApplication.address += ((developmentApplication.address === "") ? "" : " ") + row[1].trim();
                         } else if (text.startsWith("property suburb") && row.length >= 2 && row[1].trim() !== "0" && row[1].trim().toLowerCase() !== "lodgement fee - base amount") {
                             developmentApplication.address += ((developmentApplication.address === "") ? "" : ", ") + ((row[1].trim() === "" || row[1].toUpperCase() !== row[1]) ? "PORT PIRIE" : row[1].trim());
@@ -156,8 +193,11 @@ async function main() {
                 }
 
                 for (let developmentApplication of developmentApplications) {
-                    developmentApplication.address = developmentApplication.address.trim().replace(/\+ü/g, " ").replace(/ü/g, " ").replace(/\s\s+/g, " ");
-                    await insertRow(database, developmentApplication);
+                    developmentApplication.address = formatAddress(developmentApplication.address.trim().replace(/\+ü/g, " ").replace(/ü/g, " ").replace(/\s\s+/g, " "));
+                    if (developmentApplication.reason.trim() === "")
+                        developmentApplication.reason = "No description provided";
+                    if (developmentApplication.applicationNumber.trim() !== "" && developmentApplication.address.trim() !== "")
+                        await insertRow(database, developmentApplication);
                 }
 
                 console.log(`Parsed document: ${pdfUrl}`);
