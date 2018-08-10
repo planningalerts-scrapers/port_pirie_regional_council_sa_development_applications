@@ -17,9 +17,12 @@ let fs = require("fs");
 const DevelopmentApplicationsUrl = "http://www.pirie.sa.gov.au/page.aspx?u=646#.W2REvfZuKUl";
 const CommentUrl = "mailto:council@pirie.sa.gov.au";
 
-// Suburb names.
+// Address information.
 
-let SuburbNamesAndPostCodes = null;
+let StreetNames = null;
+let StreetSuffixes = null;
+let SuburbNames = null;
+let HundredNames = null;
 
 // Sets up an sqlite database.
 
@@ -66,7 +69,32 @@ async function insertRow(database, developmentApplication) {
 
 // Format the address, ensuring that it has a valid suburb, state and post code.
 
-function formatAddress(address) {
+function formatAddress(houseNumber, streetName, suburbName, hundredName) {
+    houseNumber = houseNumber.trim().replace(/\s\s+/g, " ");  // replace multiple whitespace characters with a single space
+    streetName = streetName.trim().replace(/\s\s+/g, " ");  // replace multiple whitespace characters with a single space
+    suburbName = suburbName.trim().replace(/\s\s+/g, " ");  // replace multiple whitespace characters with a single space
+    hundredName = hundredName.trim().replace(/\s\s+/g, " ");  // replace multiple whitespace characters with a single space
+
+    // Lookup the street name.  Zero, one or multiple suburbs may result.
+
+
+    // Lookup the suburb name
+
+    if (suburbName.length >= " SA NNNN".length && / SA [0-9]{4}/.test(suburbName.substring(address.length - " SA NNNN".length))) { // for example, "SA 5240"
+        // The suburb name is already valid.
+    } else {
+        suburbName = SuburbNames[suburbName.toUpperCase()];  // adds the state and postcode to the suburub
+        if (suburbName === undefined) {  // unrecognised suburb name
+            // check if there is a hundred name; if so, get all of the possible suburbs and use them with the street name
+        }
+        
+        // Try to determine the suburb name.  Use the hundred name if necessary.
+    }
+
+
+
+    suburbName = suburbName.trim().replace(/\s\s+/g, " ");  // replace multiple whitespace characters with a single space
+
     address = address.trim().replace(/\s\s+/g, " ");  // replace multiple whitespace characters with a single space
     if (address === "")
         return address;  // cannot do anything with a blank address
@@ -97,11 +125,37 @@ async function main() {
 
     let database = await initializeDatabase();
 
-    // Obtain all suburb names.
+    // Obtain all address information.
 
-    SuburbNamesAndPostCodes = {};
-    for (let suburbNameAndPostCode of fs.readFileSync("suburbnames.txt").toString().replace(/\r/g, "").trim().split("\n"))
-        SuburbNamesAndPostCodes[suburbNameAndPostCode.split(",")[0]] = suburbNameAndPostCode.split(",")[1];
+    StreetSuffixes = {};
+    for (let line of fs.readFileSync("streetsuffixes.txt").toString().replace(/\r/g, "").trim().split("\n")) {
+        let streetSuffixTokens = line.split(",");
+        StreetSuffixes[streetSuffixTokens[0].trim()] = streetSuffixTokens[1].trim();
+    }
+
+    StreetNames = {}
+    for (let line of fs.readFileSync("streetnames.txt").toString().replace(/\r/g, "").trim().split("\n")) {
+        let streetTokens = line.split(",");
+        let streetName = streetTokens[0].trim();
+        let suburbName = streetTokens[1].trim();
+        if (StreetNames[streetName] === undefined)
+            StreetNames[streetName] = [];
+        StreetNames[streetName].push(suburbName);
+    }
+
+    HundredNames = {};
+    SuburbNames = {};
+    for (let line of fs.readFileSync("suburbnames.txt").toString().replace(/\r/g, "").trim().split("\n")) {
+        let suburbTokens = line.split(",");
+        let suburbName = suburbTokens[0].trim();
+        let suburbStateAndPostCode = suburbTokens[1].trim();
+        SuburbNames[suburbName] = suburbStateAndPostCode;
+        for (let hundredName of suburbTokens[2].split(";")) {
+            if (HundredNames[hundredName] === undefined)
+                HundredNames[hundredName] = [];
+            HundredNames[hundredName].push(suburbStateAndPostCode);
+        }
+    }
 
     // Retrieve the page contains the links to the PDFs.
 
@@ -163,7 +217,11 @@ async function main() {
                             informationUrl : pdfUrl,
                             commentUrl: CommentUrl,
                             scrapeDate : moment().format("YYYY-MM-DD"),
-                            receivedDate: ""
+                            receivedDate: "",
+                            houseNumber: "",
+                            streetName: "",
+                            suburbName: "",
+                            hundredName: ""
                         }
                         developmentApplications.push(developmentApplication);
                         isReason = false;
@@ -176,11 +234,13 @@ async function main() {
                         }
                     } else if (developmentApplication !== null) {
                         if (text.startsWith("property house no") && row.length >= 2 && row[1].trim() !== "0" && row[1].trim().toLowerCase() !== "building conditions") {
-                            developmentApplication.address += ((developmentApplication.address === "") ? "" : " ") + row[1].trim();
-                        } else if (text.startsWith("property street") && row.length >= 2 && row[1].replace(/ü/g, " ").toUpperCase() === row[1].replace(/ü/g, " ") && row[1].trim() !== "0") {
-                            developmentApplication.address += ((developmentApplication.address === "") ? "" : " ") + row[1].trim();
-                        } else if (text.startsWith("property suburb") && row.length >= 2 && row[1].trim() !== "0" && row[1].trim().toLowerCase() !== "lodgement fee - base amount") {
-                            developmentApplication.address += ((developmentApplication.address === "") ? "" : ", ") + ((row[1].trim() === "" || row[1].toUpperCase() !== row[1]) ? "PORT PIRIE" : row[1].trim());
+                            developmentApplication.houseNumber = row[1].trim();
+                        } else if (text.startsWith("property street") && row.length >= 2 && row[1].trim() !== "0" && row[1].replace(/ü/g, " ").toUpperCase() === row[1].replace(/ü/g, " ")) {
+                            developmentApplication.streetName = row[1].replace(/\+ü/g, " ").replace(/ü/g, " ").trim();
+                        } else if (text.startsWith("property suburb") && row.length >= 2 && row[1].trim() !== "0" && row[1].trim().toLowerCase() != "lodgement fee - base amount" && row[1] === row[1].toUpperCase()) {
+                            developmentApplication.suburbName = row[1].trim();
+                        } else if (text.startsWith("hundred") && row.length >= 2 && row[1].trim() !== "0" && !row[1].trim().startsWith("$") && row[1] === row[1].toUpperCase()) {
+                            developmentApplication.hundredName = row[1].trim();
                         } else if (text.startsWith("development description")) {
                             isReason = true;
                         } else if (isReason && text.startsWith("private certifier name")) {
@@ -193,7 +253,7 @@ async function main() {
                 }
 
                 for (let developmentApplication of developmentApplications) {
-                    developmentApplication.address = formatAddress(developmentApplication.address.trim().replace(/\+ü/g, " ").replace(/ü/g, " ").replace(/\s\s+/g, " "));
+                    developmentApplication.address = formatAddress(developmentApplication.houseNumber, developmentApplication.streetName, developmentApplication.suburbName, developmentApplication.hundredName).trim().replace(/\s\s+/g, " ");
                     if (developmentApplication.reason.trim() === "")
                         developmentApplication.reason = "No description provided";
                     if (developmentApplication.applicationNumber.trim() !== "" && developmentApplication.address.trim() !== "")
