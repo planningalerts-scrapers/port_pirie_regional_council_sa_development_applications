@@ -75,8 +75,36 @@ function formatAddress(houseNumber, streetName, suburbName, hundredName) {
     suburbName = suburbName.trim().replace(/\s\s+/g, " ");  // replace multiple whitespace characters with a single space
     hundredName = hundredName.trim().replace(/\s\s+/g, " ");  // replace multiple whitespace characters with a single space
 
+    if (suburbName.length >= " SA NNNN".length && / SA [0-9]{4}/.test(suburbName.substring(address.length - " SA NNNN".length))) { // for example, "SA 5240"
+        // The suburb name is already valid.
+    } else {
+        suburbName = SuburbNames[suburbName.toLowerCase()];  // adds the state and postcode to the suburub
+        if (suburbName === undefined) {  // unrecognised suburb name
+            // check if there is a hundred name; if so, get all of the possible suburbs and use them with the street name
+        }
+        
+        // Try to determine the suburb name.  Use the hundred name if necessary.
+    }
+
     // Lookup the street name.  Zero, one or multiple suburbs may result.
 
+    let streetNames = StreetNames[streetName];
+    if (streetNames.length === 0) {
+        // Attempt to use the street name suffixes.
+        let tokens = streetName.split(" ");
+        let streetSuffixAbbreviation = tokens[tokens.length - 1].toLowerCase();
+        let streetSuffix = StreetSuffixes[streetSuffixAbbreviation];
+    }
+
+
+
+    if (streetNames.length === 0) {
+
+    } else if (streetNames.length === 1) {
+
+    } else {
+        // Attempt to use the hundred name
+    }
 
 
 
@@ -85,7 +113,7 @@ function formatAddress(houseNumber, streetName, suburbName, hundredName) {
     if (suburbName.length >= " SA NNNN".length && / SA [0-9]{4}/.test(suburbName.substring(address.length - " SA NNNN".length))) { // for example, "SA 5240"
         // The suburb name is already valid.
     } else {
-        suburbName = SuburbNames[suburbName.toUpperCase()];  // adds the state and postcode to the suburub
+        suburbName = SuburbNames[suburbName.toLowerCase()];  // adds the state and postcode to the suburub
         if (suburbName === undefined) {  // unrecognised suburb name
             // check if there is a hundred name; if so, get all of the possible suburbs and use them with the street name
         }
@@ -94,7 +122,7 @@ function formatAddress(houseNumber, streetName, suburbName, hundredName) {
     }
 
 
-    
+
 
     suburbName = suburbName.trim().replace(/\s\s+/g, " ");  // replace multiple whitespace characters with a single space
 
@@ -133,7 +161,7 @@ async function main() {
     StreetNames = {}
     for (let line of fs.readFileSync("streetnames.txt").toString().replace(/\r/g, "").trim().split("\n")) {
         let streetTokens = line.split(",");
-        let streetName = streetTokens[0].trim();
+        let streetName = streetTokens[0].trim().toLowerCase();
         let suburbName = streetTokens[1].trim();
         if (StreetNames[streetName] === undefined)
             StreetNames[streetName] = [];
@@ -143,17 +171,18 @@ async function main() {
     StreetSuffixes = {};
     for (let line of fs.readFileSync("streetsuffixes.txt").toString().replace(/\r/g, "").trim().split("\n")) {
         let streetSuffixTokens = line.split(",");
-        StreetSuffixes[streetSuffixTokens[0].trim()] = streetSuffixTokens[1].trim();
+        StreetSuffixes[streetSuffixTokens[0].trim().toLowerCase()] = streetSuffixTokens[1].trim();
     }
 
     SuburbNames = {};
     HundredNames = {};
     for (let line of fs.readFileSync("suburbnames.txt").toString().replace(/\r/g, "").trim().split("\n")) {
         let suburbTokens = line.split(",");
-        let suburbName = suburbTokens[0].trim();
+        let suburbName = suburbTokens[0].trim().toLowerCase();
         let suburbStateAndPostCode = suburbTokens[1].trim();
         SuburbNames[suburbName] = suburbStateAndPostCode;
         for (let hundredName of suburbTokens[2].split(";")) {
+            hundredName = hundredName.toLowerCase();
             if (HundredNames[hundredName] === undefined)
                 HundredNames[hundredName] = [];
             HundredNames[hundredName].push(suburbStateAndPostCode);  // several sububs may exist for the same suburb name
