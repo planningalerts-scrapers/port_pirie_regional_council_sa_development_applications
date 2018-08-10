@@ -78,6 +78,8 @@ function formatAddress(houseNumber, streetName, suburbName, hundredName) {
     // Lookup the street name.  Zero, one or multiple suburbs may result.
 
 
+
+
     // Lookup the suburb name
 
     if (suburbName.length >= " SA NNNN".length && / SA [0-9]{4}/.test(suburbName.substring(address.length - " SA NNNN".length))) { // for example, "SA 5240"
@@ -92,6 +94,7 @@ function formatAddress(houseNumber, streetName, suburbName, hundredName) {
     }
 
 
+    
 
     suburbName = suburbName.trim().replace(/\s\s+/g, " ");  // replace multiple whitespace characters with a single space
 
@@ -127,12 +130,6 @@ async function main() {
 
     // Obtain all address information.
 
-    StreetSuffixes = {};
-    for (let line of fs.readFileSync("streetsuffixes.txt").toString().replace(/\r/g, "").trim().split("\n")) {
-        let streetSuffixTokens = line.split(",");
-        StreetSuffixes[streetSuffixTokens[0].trim()] = streetSuffixTokens[1].trim();
-    }
-
     StreetNames = {}
     for (let line of fs.readFileSync("streetnames.txt").toString().replace(/\r/g, "").trim().split("\n")) {
         let streetTokens = line.split(",");
@@ -140,11 +137,17 @@ async function main() {
         let suburbName = streetTokens[1].trim();
         if (StreetNames[streetName] === undefined)
             StreetNames[streetName] = [];
-        StreetNames[streetName].push(suburbName);
+        StreetNames[streetName].push(suburbName);  // several suburbs may exist for the same street name
     }
 
-    HundredNames = {};
+    StreetSuffixes = {};
+    for (let line of fs.readFileSync("streetsuffixes.txt").toString().replace(/\r/g, "").trim().split("\n")) {
+        let streetSuffixTokens = line.split(",");
+        StreetSuffixes[streetSuffixTokens[0].trim()] = streetSuffixTokens[1].trim();
+    }
+
     SuburbNames = {};
+    HundredNames = {};
     for (let line of fs.readFileSync("suburbnames.txt").toString().replace(/\r/g, "").trim().split("\n")) {
         let suburbTokens = line.split(",");
         let suburbName = suburbTokens[0].trim();
@@ -153,7 +156,7 @@ async function main() {
         for (let hundredName of suburbTokens[2].split(";")) {
             if (HundredNames[hundredName] === undefined)
                 HundredNames[hundredName] = [];
-            HundredNames[hundredName].push(suburbStateAndPostCode);
+            HundredNames[hundredName].push(suburbStateAndPostCode);  // several sububs may exist for the same suburb name
         }
     }
 
