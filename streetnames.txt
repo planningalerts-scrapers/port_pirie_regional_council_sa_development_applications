@@ -1,0 +1,606 @@
+Abattoirs Road,PIRIE EAST
+Abattoirs Road,PORT PIRIE SOUTH
+Acacia Street,RISON PARK SOUTH
+Adelaide Square,CRYSTAL BROOK
+Aerodrome Road,PIRIE EAST
+Aerodrome Road,RISON PARK SOUTH
+Afford Road,PORT PIRIE SOUTH
+Afton Street,PORT PIRIE SOUTH
+Agett Place,PORT PIRIE SOUTH
+Agnes Street,PORT PIRIE WEST
+Albert Terrace,PORT PIRIE
+Albert Terrace,SOLOMONTOWN
+Alexander Street,PORT PIRIE
+Alexandria Avenue,RISON PARK SOUTH
+Alfred Street,RISDON PARK
+Algernon Street,PORT PIRIE WEST
+Alice Street,PORT PIRIE WEST
+Allan Street,CRYSTAL BROOK
+Alpha Terrace,PORT PIRIE
+Alpha Terrace,SOLOMONTOWN
+Amanda Court,RISON PARK SOUTH
+Amanda Street,PORT PIRIE WEST
+Amelia Street,PORT PIRIE SOUTH
+Angle Street,SOLOMONTOWN
+Annie Street,PORT PIRIE WEST
+Anzac Road,PORT PIRIE WEST
+Anzac Road,RISDON PARK
+Arbon Road,CRYSTAL BROOK
+Armour Street,PORT PIRIE WEST
+Arnold Street,PORT PIRIE SOUTH
+Arthur Crescent,RISDON PARK
+Arthur Street,RISDON PARK
+Ascot Avenue,RISDON PARK
+Azile Road,MERRITON
+Bain Avenue,NAPPERBY
+Bain Avenue,RISDON PARK
+Balmoral Road,PORT PIRIE SOUTH
+Balmoral Road,RISDON PARK
+Barbara Crescent,RISON PARK SOUTH
+Barnes Street,RISDON PARK
+Barr Street,REDHILL
+Barry Street,RISON PARK SOUTH
+Bartsch Drive,SOLOMONTOWN
+Barunga Top Road,MUNDOORA
+Batty Street,PORT PIRIE SOUTH
+Bauer Street,PORT PIRIE SOUTH
+Beach Road,SOLOMONTOWN
+Beaumont Avenue,PORT PIRIE SOUTH
+Beetaloo Valley Road,CRYSTAL BROOK
+Benedict Court,PORT PIRIE SOUTH
+Bensley Street,RISDON PARK
+Bill Jones Crescent,RISDON PARK
+Binney Road,CRYSTAL BROOK
+Blight Street,RISON PARK SOUTH
+Bolivar Crescent,PORT PIRIE SOUTH
+Boundary Road,COONAMIA
+Boundary Road,SOLOMONTOWN
+Bowman Street,CRYSTAL BROOK
+Bowman Street,REDHILL
+Brakenridge Street,RISDON PARK
+Brandis Street,CRYSTAL BROOK
+Branford Street,SOLOMONTOWN
+Bray Street,RISDON PARK
+Breage Street,RISDON PARK
+Brereton Street,RISON PARK SOUTH
+Broadstock Road,SOLOMONTOWN
+Broadway Road,PORT PIRIE WEST
+Broadway Road,RISDON PARK
+Brown Street,PORT PIRIE SOUTH
+Bruce Street,PORT PIRIE WEST
+Burt Street,SOLOMONTOWN
+Butler Street,PORT PIRIE WEST
+Butterick Street,PORT PIRIE SOUTH
+Caldecott Street,RISDON PARK
+Campbell Street,RISDON PARK
+Carter Crescent,RISDON PARK
+Caryll Court,RISON PARK SOUTH
+Cashmore Street,PORT PIRIE SOUTH
+Casuarina Drive,RISON PARK SOUTH
+Cattle Track,CRYSTAL BROOK
+Cattle Track,REDHILL
+Cavenett Street,PORT PIRIE WEST
+Charles Street,PORT PIRIE WEST
+Cheesman Avenue,RISON PARK SOUTH
+Church Circuit,SOLOMONTOWN
+Clara Street,PORT PIRIE WEST
+Clare Highway,CRYSTAL BROOK
+Claridge Road,CRYSTAL BROOK
+Clark Street,RISDON PARK
+Claxton Street,PORT PIRIE WEST
+Clayton Street,PORT PIRIE SOUTH
+Cleasby Street,PORT PIRIE SOUTH
+Clements Street,CRYSTAL BROOK
+Cockburn Street,PORT PIRIE WEST
+Collaby Hill Road,WARNERTOWN
+Collingwood Street,RISDON PARK
+Collins Street,PORT PIRIE SOUTH
+Collinsfield Road,COLLINSFIELD
+Collinsfield Road,KOOLUNGA
+Colton Street,CRYSTAL BROOK
+Combe Road,MERRITON
+Coombe Road,PORT PIRIE WEST
+Copinger Road,SOLOMONTOWN
+Cottell Street,PORT PIRIE SOUTH
+Coyder Street,CRYSTAL BROOK
+Creasy Street,RISON PARK SOUTH
+Cremorne Crescent,RISDON PARK
+Crystal Brook Valley Road,CRYSTAL BROOK
+Cunningham Boulevard,RISON PARK SOUTH
+Cunningham Street,CRYSTAL BROOK
+Daisy Street,SOLOMONTOWN
+Darbon Terrace,CRYSTAL BROOK
+David Street,PORT PIRIE
+Davies Road,PIRIE EAST
+Davis Avenue,RISDON PARK
+Davis Road,PIRIE EAST
+Davis Road,WARNERTOWN
+Dawn Court,RISON PARK SOUTH
+Dawson Street,PORT PIRIE SOUTH
+Degenhardt Street,PORT PIRIE SOUTH
+Delamere Road,WARNERTOWN
+Desteno Street,PORT PIRIE WEST
+Dey Street,PORT PIRIE SOUTH
+Dianne Street,PORT PIRIE SOUTH
+Dobbin Drive,PORT PIRIE SOUTH
+Donovan Street,RISDON PARK
+Dorothy Street,PORT PIRIE SOUTH
+Dowling Street,RISDON PARK
+Drage Street,PORT PIRIE SOUTH
+Duffield Street,PORT PIRIE WEST
+Duffy Lane,PORT PIRIE WEST
+Duke Street,PORT PIRIE WEST
+Dunkley Street,PORT PIRIE SOUTH
+Dunn Street,RISDON PARK
+Dunstone Street,RISDON PARK
+Dyer Street,RISON PARK SOUTH
+Eagle Court,RISON PARK SOUTH
+East Terrace,MUNDOORA
+East Terrace,NAPPERBY
+Edey Road,REDHILL
+Edmund Terrace,CRYSTAL BROOK
+Edward Street,PORT PIRIE SOUTH
+Edward Street,PORT PIRIE WEST
+Eighth Street,PORT PIRIE WEST
+Elcho Street,PORT PIRIE WEST
+Eleventh Street,PORT PIRIE WEST
+Elizabeth Street,PORT PIRIE SOUTH
+Ellen Street,PORT PIRIE
+Ellis Street,REDHILL
+Emma Street,SOLOMONTOWN
+Esklund Street,RISON PARK SOUTH
+Esmond Road,PORT PIRIE SOUTH
+Esmond Road,RISDON PARK
+Eunice Street,PORT PIRIE SOUTH
+Evans Street,PORT PIRIE SOUTH
+Eveline Street,PORT PIRIE WEST
+Evely Street,RISDON PARK
+Ewbank Street,REDHILL
+Exchange Road,PIRIE EAST
+Extension Eyre Road,CRYSTAL BROOK
+Eyre Road,CRYSTAL BROOK
+Falconer Street,PORT PIRIE WEST
+Farrell Street,RISDON PARK
+Fay Street,PORT PIRIE
+Federation Road,PORT PIRIE WEST
+Feeley Street,SOLOMONTOWN
+Ferguson Street,CRYSTAL BROOK
+Ferme Street,RISON PARK SOUTH
+Fetcher Court,PORT PIRIE SOUTH
+Fifth Street,NAPPERBY
+Fifth Street,PORT PIRIE WEST
+First Street,NAPPERBY
+First Street,PORT PIRIE WEST
+Fisher Street,RISDON PARK
+Fitzgerald Street,PORT PIRIE SOUTH
+Flett Street,RISDON PARK
+Flinders Street,CRYSTAL BROOK
+Florence Street,PORT PIRIE
+Forgan Street,CRYSTAL BROOK
+Foristel Place,RISDON PARK
+Foristel Street,RISON PARK SOUTH
+Fourth Street,NAPPERBY
+Fourth Street,PORT PIRIE WEST
+Frances Street,PORT PIRIE WEST
+Frederick Road,PORT PIRIE WEST
+French Street,RISDON PARK
+Frith Road,CRYSTAL BROOK
+Frith Road,NUROM
+Gadd Avenue,CRYSTAL BROOK
+Garden Road,PIRIE EAST
+Geddes Road,SOLOMONTOWN
+George Street,PORT PIRIE
+Georgetown Huddlestone Road,HUDDLESTON
+Gerald Street,PORT PIRIE WEST
+Germein Road,BUNGAMA
+Germein Road,COONAMIA
+Germein Road,GERMEIN BAY
+Germein Road,NAPPERBY
+Germein Road,SOLOMONTOWN
+Gertrude Street,PORT PIRIE
+Gilbert Street,CRYSTAL BROOK
+Giles Street,CRYSTAL BROOK
+Gillett Street,PORT PIRIE SOUTH
+Gladstone Road,CRYSTAL BROOK
+Glasson Street,PORT PIRIE SOUTH
+Golding Street,RISDON PARK
+Goode Road,PORT PIRIE WEST
+Goodfellow Street,PORT PIRIE
+Gooding Street,PORT PIRIE WEST
+Gordon Street,RISDON PARK
+Goulter Road,CRYSTAL BROOK
+Greenwood Street,PORT PIRIE WEST
+Greer Street,PORT PIRIE SOUTH
+Greig Road,CRYSTAL BROOK
+Grevillia Avenue,RISON PARK SOUTH
+Grey Terrace,PORT PIRIE
+Grey Terrace,PORT PIRIE SOUTH
+Gulf View Road,COONAMIA
+Gum Creek Road,COLLINSFIELD
+Gwyn Street,RISDON PARK
+Hackett Street,RISDON PARK
+Haines Street,RISON PARK SOUTH
+Hakea Court,RISON PARK SOUTH
+Haldane Road,COONAMIA
+Hallam Street,PORT PIRIE WEST
+Halley Street,RISDON PARK
+Halliday Street,RISDON PARK
+Hannan Street,RISON PARK SOUTH
+Hardy Street,RISDON PARK
+Harris Road,PORT PIRIE SOUTH
+Harrison Crescent,RISDON PARK
+Harrison Street,RISDON PARK
+Haslam Road,SOLOMONTOWN
+Hayes Road,REDHILL
+Heaslips Road,HUDDLESTON
+Heath Street,SOLOMONTOWN
+Heatherdale Road,CRYSTAL BROOK
+Hemmons Street,PORT PIRIE WEST
+Henry Street,RISDON PARK
+Herbert Street,RISDON PARK
+Hewitt Street,RISON PARK SOUTH
+Heywood Avenue,RISDON PARK
+Higgins Court,RISON PARK SOUTH
+Hilda Street,PORT PIRIE SOUTH
+Hill Street,SOLOMONTOWN
+Hillview Road,COONAMIA
+Hillview Road,PORT PIRIE SOUTH
+Hope Street,REDHILL
+Hopes Gap Road,MUNDOORA
+Hopkins Street,PORT PIRIE WEST
+Horner Street,SOLOMONTOWN
+Howard Street,RISDON PARK
+Howe Street,RISDON PARK
+Huddleston Road,CRYSTAL BROOK
+Huddleston Road,HUDDLESTON
+Hughes Street,PORT PIRIE SOUTH
+Hurst Street,RISON PARK SOUTH
+Hutchinson Street,RISON PARK SOUTH
+Hyde Street,RISDON PARK
+Ian Street,PORT PIRIE SOUTH
+Illman Street,SOLOMONTOWN
+Ingerson Street,PORT PIRIE SOUTH
+Ingram Gap Road,COLLINSFIELD
+Ingram Gap Road,MUNDOORA
+Iron Knob Street,PORT PIRIE WEST
+Ivy Street,SOLOMONTOWN
+Jacobi Street,RISON PARK SOUTH
+James Street,PORT PIRIE SOUTH
+Jeffery Street,PORT PIRIE SOUTH
+Jellicoe Street,PORT PIRIE SOUTH
+Jenkins Street,RISDON PARK
+Jennings Street,CRYSTAL BROOK
+Jensen Street,RISDON PARK
+Jervis Street,RISDON PARK
+Joffre Street,RISDON PARK
+John Street,CRYSTAL BROOK
+John Street,PORT PIRIE SOUTH
+Johnson Street,RISDON PARK
+Jones Road,KOOLUNGA
+Kaeleen Court,RISON PARK SOUTH
+Keane Street,RISON PARK SOUTH
+Keith Street,PORT PIRIE WEST
+Key Street,PORT PIRIE SOUTH
+King Street,SOLOMONTOWN
+Kingston Road,PORT PIRIE SOUTH
+Kingston Road,RISDON PARK
+Kingston Road,RISON PARK SOUTH
+Kipara Street,PORT PIRIE WEST
+Kitchener Terrace,PORT PIRIE WEST
+Kitchener Terrace,RISDON PARK
+Klaus Road,KOOLUNGA
+Klingners Road,CRYSTAL BROOK
+Knapman Street,PORT PIRIE SOUTH
+Koolunga Brinkworth Road,KOOLUNGA
+Kotsoglous Crescent,PORT PIRIE WEST
+Kurll Street,RISON PARK SOUTH
+Lacey Street,PORT PIRIE SOUTH
+Lacey Street,PORT PIRIE WEST
+Lamb Street,PORT PIRIE WEST
+Lamm Street,RISDON PARK
+Laura Pirie Road,HUDDLESTON
+Laureate Street,PORT PIRIE WEST
+Lawrie Street,RISON PARK SOUTH
+Leahey Road,PORT PIRIE
+Leonard Avenue,RISDON PARK
+Lily Street,PORT PIRIE WEST
+Little Gertrude Street,PORT PIRIE
+Little Street,CRYSTAL BROOK
+Locks Road,NAPPERBY
+Lorna Avenue,RISDON PARK
+Lower Aerodrom Road,PIRIE EAST
+Lower Aerodrom Road,RISON PARK SOUTH
+Luscombe Street,RISON PARK SOUTH
+Lydeamore Street,RISON PARK SOUTH
+Lyons Street,CRYSTAL BROOK
+Magor Road,COONAMIA
+Magor Road,PORT PIRIE SOUTH
+Main Road,MUNDOORA
+Main Road,PORT PIRIE
+Main Road,SOLOMONTOWN
+Mais Terrace,CRYSTAL BROOK
+Mallyon Street,PORT PIRIE SOUTH
+Manders Street,SOLOMONTOWN
+Manfred Street,CRYSTAL BROOK
+Mannix Court,RISON PARK SOUTH
+Mansom Street,PORT PIRIE WEST
+Marriett Street,SOLOMONTOWN
+Marrietta Street,PORT PIRIE SOUTH
+Martin Street,RISDON PARK
+Mary Elie Street,PORT PIRIE
+Maslin Street,REDHILL
+Maude Street,PORT PIRIE SOUTH
+Maude Street,PORT PIRIE WEST
+May Street,PORT PIRIE WEST
+Mcbride Court,RISDON PARK
+Meadow Crescent,RISDON PARK
+Melissa Court,RISON PARK SOUTH
+Memorial Drive,PORT PIRIE
+Mercowie Road,CRYSTAL BROOK
+Merriton Narridy Road,CRYSTAL BROOK
+Merriton Narridy Road,MERRITON
+Merritt Court,PORT PIRIE WEST
+Meyers Street,RISDON PARK
+Middle Track,NELSHABY
+Middleton Street,RISDON PARK
+Miell Terrace,PORT PIRIE WEST
+Milcowie Road,CRYSTAL BROOK
+Milcowie Road,NUROM
+Millams Avenue,RISDON PARK
+Mills Street,RISDON PARK
+Milne Street,RISDON PARK
+Mitchell Street,CRYSTAL BROOK
+Mitchell Street,RISDON PARK
+Moorhouse Street,REDHILL
+Moorhouse Street,SOLOMONTOWN
+Moppett Road,PORT PIRIE WEST
+Moresby Crescent,RISDON PARK
+Morgan Court,RISDON PARK
+Mundoora Road,CLEMENTS GAP
+Mundoora Road,MERRITON
+Mundoora Road,MUNDOORA
+Mundoora Terrace,REDHILL
+Murdoch Street,PORT PIRIE SOUTH
+Murn Street,PORT PIRIE SOUTH
+Murray Street,CRYSTAL BROOK
+Musgrave Street,CRYSTAL BROOK
+Narridy Koolunga Road,KOOLUNGA
+Narridy Road,REDHILL
+Nelshaby Road,NAPPERBY
+Nelson Street,RISDON PARK
+Neylon Street,RISDON PARK
+Ninth Street,PORT PIRIE WEST
+Noll Street,RISON PARK SOUTH
+Norah Street,RISDON PARK
+Norman Street,PORT PIRIE
+North Terrace,NAPPERBY
+Noyces Road,CLEMENTS GAP
+Noyces Road,MUNDOORA
+Nurom Road,CRYSTAL BROOK
+Oaks Road,NAPPERBY
+Old Pirie Broughton Road,LOWER BROUGHTON
+Old Pirie Broughton Road,PIRIE EAST
+Old Pirie Broughton Road,RISON PARK SOUTH
+Old Pirie Broughton Road,WANDEARAH EAST
+Old Racecourse Road,BUNGAMA
+Old Racecourse Road,PORT PIRIE SOUTH
+Old School House Road,MERRITON
+Oliver Street,PORT PIRIE SOUTH
+O'Loughlin Avenue,PORT PIRIE SOUTH
+Osborne Street,PORT PIRIE SOUTH
+O'Shaughnessy Road,CRYSTAL BROOK
+Ottilind Street,PORT PIRIE WEST
+Oxford Street,RISDON PARK
+Palmer Street,PORT PIRIE WEST
+Paralla Street,PORT PIRIE WEST
+Parham Street,PORT PIRIE SOUTH
+Parker Street,RISON PARK SOUTH
+Parkes Court,RISDON PARK
+Parks Street,SOLOMONTOWN
+Paru Street,PORT PIRIE WEST
+Patterson Street,PORT PIRIE SOUTH
+Pattingales Road,MUNDOORA
+Paul Street,PORT PIRIE SOUTH
+Pavlich Street,PORT PIRIE WEST
+Pearce Street,PORT PIRIE WEST
+Pelham Road,PORT PIRIE SOUTH
+Pelham Road,RISON PARK SOUTH
+Pengillys Road,REDHILL
+Penrose Street,RISDON PARK
+Percy Street,RISDON PARK
+Phillis Street,PORT PIRIE SOUTH
+Pilgrim Street,SOLOMONTOWN
+Pine Street,SOLOMONTOWN
+Piper Street,PORT PIRIE SOUTH
+Pirie Blocks Road,BUNGAMA
+Pirie Blocks Road,WARNERTOWN
+Pirie Street,PORT PIRIE SOUTH
+Plantation Crescent,PORT PIRIE SOUTH
+Plenty Street,RISON PARK SOUTH
+Port Broughton Road,PORT PIRIE SOUTH
+Port Davis Road,RISON PARK SOUTH
+Port Pirie Port Broughton Road,CLEMENTS GAP
+Port Pirie Port Broughton Road,MUNDOORA
+Port Pirie Port Broughton Road,NUROM
+Port Pirie Port Broughton Road,PIRIE EAST
+Port Pirie Port Broughton Road,WANDEARAH EAST
+Port Wakefield Road,BUNGAMA
+Port Wakefield Road,COLLINSFIELD
+Port Wakefield Road,CRYSTAL BROOK
+Port Wakefield Road,MERRITON
+Port Wakefield Road,NAPPERBY
+Port Wakefield Road,NELSHABY
+Port Wakefield Road,REDHILL
+Port Wakefield Road,WARNERTOWN
+Poynton Street,PORT PIRIE WEST
+Prince Street,SOLOMONTOWN
+Princes Highway,CRYSTAL BROOK
+Princes Highway,MERRITON
+Princes Highway,REDHILL
+Priya Court,RISON PARK SOUTH
+Pugsley Street,PORT PIRIE SOUTH
+Queen Street,SOLOMONTOWN
+Quorna Street,PORT PIRIE WEST
+Radford Drive,RISON PARK SOUTH
+Radnor Street,PORT PIRIE SOUTH
+Railway Terrace,COONAMIA
+Railway Terrace,CRYSTAL BROOK
+Railway Terrace,PORT PIRIE
+Railway Terrace,PORT PIRIE SOUTH
+Ramsay Street,PORT PIRIE SOUTH
+Read Street,PORT PIRIE WEST
+Redhill Koolunga Road,KOOLUNGA
+Redhill Koolunga Road,REDHILL
+Reese Court,RISON PARK SOUTH
+Regent Street,RISDON PARK
+Reginald Street,PORT PIRIE SOUTH
+Revell Street,PORT PIRIE WEST
+RF Nicholls Drive,CRYSTAL BROOK
+River Road,KOOLUNGA
+River Road,REDHILL
+River Terrace,REDHILL
+Robinson Road,CRYSTAL BROOK
+Robinson Street,RISDON PARK
+Rodda Street,PORT PIRIE WEST
+Ronald Street,PORT PIRIE SOUTH
+Roper Street,PORT PIRIE SOUTH
+Rupara Street,PORT PIRIE WEST
+Sabine Street,SOLOMONTOWN
+Sampson Street,PORT PIRIE SOUTH
+Sandery Street,SOLOMONTOWN
+Sargents Road,CRYSTAL BROOK
+Sayner Court,PORT PIRIE WEST
+Scarman Street,RISDON PARK
+Scenic Road,NAPPERBY
+Scenic Road,WARNERTOWN
+Scone Street,PORT PIRIE WEST
+Scott Street,PORT PIRIE WEST
+Searle Street,PORT PIRIE SOUTH
+Second Street,NAPPERBY
+Second Street,PORT PIRIE WEST
+Senate Road,PORT PIRIE WEST
+Senate Road,RISDON PARK
+Senate Road,RISON PARK SOUTH
+Senna Road,NUROM
+Seventh Street,NAPPERBY
+Seventh Street,PORT PIRIE WEST
+Seymour Street,PORT PIRIE WEST
+Short Street,PORT PIRIE SOUTH
+Sifton Street,PORT PIRIE WEST
+Simpson Road,PORT PIRIE SOUTH
+Sinclair Street,CRYSTAL BROOK
+Sixth Street,KOOLUNGA
+Sixth Street,PORT PIRIE WEST
+Sjostrom Drive,RISON PARK SOUTH
+Smale Street,RISDON PARK
+Smarts Road,KOOLUNGA
+Smith Street,PORT PIRIE SOUTH
+Snowtown Koolunga Road,KOOLUNGA
+South Copinger Road,PORT PIRIE SOUTH
+South Railway Terrace,COONAMIA
+South Street,RISDON PARK
+South Terrace,REDHILL
+Spencer Street,RISDON PARK
+Spinifex Lane,RISON PARK SOUTH
+Springwood Road,RISON PARK SOUTH
+Square Street,SOLOMONTOWN
+Stanhope Street,PORT PIRIE WEST
+Stanley Avenue,RISDON PARK
+Stanley Street,CRYSTAL BROOK
+Steamtrain Road,COONAMIA
+Steamtrain Road,PORT PIRIE SOUTH
+Stevens Street,RISON PARK SOUTH
+Stuckey Street,RISDON PARK
+Swan Street,RISDON PARK
+Swift Street,PORT PIRIE WEST
+Symonds Street,CRYSTAL BROOK
+Symonds Street,RISDON PARK
+Talbots Road,CRYSTAL BROOK
+Tay Street,PORT PIRIE WEST
+Taylor Court,PORT PIRIE WEST
+Taylors Road,CRYSTAL BROOK
+Tenth Street,PORT PIRIE WEST
+The Cattle Track,CRYSTAL BROOK
+The Terrace,PORT PIRIE
+The Terrace,PORT PIRIE SOUTH
+The Terrace,PORT PIRIE WEST
+The Terrace,RISDON PARK
+The Terrace,RISON PARK SOUTH
+The Whim Road,NUROM
+Third Street,NAPPERBY
+Third Street,PORT PIRIE WEST
+Thomas Street,PORT PIRIE WEST
+Thorn Street,PORT PIRIE WEST
+Threadgold Street,RISDON PARK
+Three Chain Road,PORT PIRIE
+Three Chain Road,PORT PIRIE SOUTH
+Three Chain Road,PORT PIRIE WEST
+Three Chain Road,RISON PARK SOUTH
+Three Chain Road,SOLOMONTOWN
+Tipara Street,PORT PIRIE WEST
+Tobin Street,RISON PARK SOUTH
+Top Track,NELSHABY
+Torrs Gap Road,REDHILL
+Trafford Street,PORT PIRIE WEST
+Trelawney Street,RISDON PARK
+Tully Crescent,PORT PIRIE WEST
+Tummell Street,PORT PIRIE WEST
+Una Avenue,PORT PIRIE SOUTH
+Veale Street,PORT PIRIE SOUTH
+Vera Street,PORT PIRIE WEST
+Verdun Street,RISDON PARK
+Victoria Street,PORT PIRIE SOUTH
+Village Way,RISON PARK SOUTH
+Vinson Street,RISDON PARK
+Vivian Court,RISDON PARK
+Walkers Track,KOOLUNGA
+Walkers Track,REDHILL
+Wall Street,RISDON PARK
+Wandearah Road,CRYSTAL BROOK
+Wandearah Road,PORT PIRIE
+Wandearah Road,PORT PIRIE SOUTH
+Waratah Street,SOLOMONTOWN
+Wardang Street,PORT PIRIE WEST
+Warne Street,PORT PIRIE WEST
+Warnertown Jamestown Road,CRYSTAL BROOK
+Warnertown Jamestown Road,HUDDLESTON
+Warnertown Jamestown Road,WARNERTOWN
+Warnertown Road,BUNGAMA
+Warnertown Road,COONAMIA
+Warnertown Road,SOLOMONTOWN
+Warren Street,PORT PIRIE SOUTH
+Watson Street,RISDON PARK
+Wattle Drive,RISON PARK SOUTH
+Wattle Street,SOLOMONTOWN
+Watts Road,BUNGAMA
+Watts Road,WARNERTOWN
+Wauchopes Road,BUNGAMA
+Wauchopes Road,COONAMIA
+Wauchopes Road,PORT PIRIE SOUTH
+Wauraltee Street,PORT PIRIE WEST
+Welch Court,RISDON PARK
+West Terrace,NAPPERBY
+West Terrace,PORT PIRIE WEST
+Western Street,SOLOMONTOWN
+Westley Street,PORT PIRIE WEST
+Weston Road,CRYSTAL BROOK
+Whittard Street,RISDON PARK
+Whittier Street,CRYSTAL BROOK
+Wilcher Street,PORT PIRIE WEST
+Wilkins Street,SOLOMONTOWN
+William Street,CRYSTAL BROOK
+Williams Drive,RISON PARK SOUTH
+Williams Street,PORT PIRIE SOUTH
+Wongabirrie Road,CRYSTAL BROOK
+Wood Street,PORT PIRIE SOUTH
+Woolnough Street,PORT PIRIE WEST
+Worby Street,RISON PARK SOUTH
+Worden Street,RISON PARK SOUTH
+Wright Street,SOLOMONTOWN
+Yacka Koolunga Road,KOOLUNGA
+Yates Street,PORT PIRIE SOUTH
+York Road,PORT PIRIE WEST
+Young Street,RISDON PARK
+Young Street,SOLOMONTOWN
+Younghusband Terrace,CRYSTAL BROOK
+Zeta Street,PORT PIRIE SOUTH
