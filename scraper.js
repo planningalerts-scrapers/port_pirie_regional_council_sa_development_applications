@@ -19,10 +19,10 @@ const CommentUrl = "mailto:council@pirie.sa.gov.au";
 
 // Address information.
 
-let StreetNames = null;
+let StreetAndSuburbNames = null;
 let StreetSuffixes = null;
 let SuburbNames = null;
-let HundredNames = null;
+let HundredSuburbNames = null;
 
 // Sets up an sqlite database.
 
@@ -75,97 +75,103 @@ function formatAddress(houseNumber, streetName, suburbName, hundredName) {
     suburbName = suburbName.trim().replace(/\s\s+/g, " ");  // replace multiple whitespace characters with a single space
     hundredName = hundredName.trim().replace(/\s\s+/g, " ");  // replace multiple whitespace characters with a single space
 
-    if (suburbName.length >= " SA NNNN".length && / SA [0-9]{4}/.test(suburbName.substring(address.length - " SA NNNN".length))) { // for example, "SA 5240"
-        // The suburb name is already valid.
-    } else {
-        suburbName = SuburbNames[suburbName.toLowerCase()];  // adds the state and postcode to the suburub
-        if (suburbName === undefined) {  // unrecognised suburb name
-            // check if there is a hundred name; if so, get all of the possible suburbs and use them with the street name
+    // The address is considered invalid if there is no street name.
+
+    if (streetName === "" || streetName === "0")
+        return "";  // invalid address
+
+    // If the hundred name appears in the street name then blank out the street name.
+
+    if (/^HD /.test(streetName) || /^HUNDRED /.test(streetName))  // for example, "HD NAPPERBY" or "HUNDRED WANDEARAH"
+        streetName = "";
+
+    // Remove the text "(NAP)" that appears in some street names.
+
+    streetName = streetName.replace(/\(NAP\) /g, "");
+
+    // Change "ROA" to "ROAD" that appears as the suffix of some street names.
+
+    streetName = streetName.replace(/ ROA$/g, " ROAD");
+
+    // Attempt to expand any street suffix abbreviations.  For example, "St" becomes "Street".
+    // Also remove any duplicated items that appear in the street, such as "STREET STREET".
+
+    let streetNameTokens = streetName.split(" ");
+
+    if (streetNameTokens.length >= 2 && streetNameTokens[0] === streetNameTokens[1])
+        streetNameTokens.shift();
+    if (streetNameTokens.length >= 2 && streetNameTokens[streetNameTokens.length - 2] === streetNameTokens[streetNameTokens.length - 1])
+        streetNameTokens.pop();
+
+    let streetSuffixAbbreviation = streetNameTokens[streetNameTokens.length - 1] || "";
+    let streetSuffix = StreetSuffixes[streetSuffixAbbreviation.toLowerCase()];
+    if (streetSuffix !== undefined)
+        streetNameTokens[streetNameTokens.length - 1] = (streetSuffixAbbreviation === streetSuffixAbbreviation.toUpperCase()) ? streetSuffix.toUpperCase() : streetSuffix;
+
+    streetName = streetNameTokens.join(" ");
+
+    // Ensure that the suburb exists and that it includes a state and a post code.  For example,
+    // "PIRIE SA 5240".
+
+    if (!/ SA [0-9]{4}$/.test(suburbName))
+        suburbName = SuburbNames[suburbName.toLowerCase()] || "";
+
+    // If the suburb was not determined then attempt to derive the suburb by using a combination
+    // of the suburbs determined based on the street name and the suburbs determined based on the
+    // hundred name.
+
+    if (suburbName === "") {
+        // Obtain the suburbs associated with the street, if it exists.  Note that there may be
+        // more than one suburb because the same street can pass through multiple suburbs and
+        // the same street name can be used in non-adjoining suburbs).
+
+        let streetSuburbNames = StreetAndSuburbNames[streetName.toLowerCase()];
+
+        // Obtain the suburbs associated with any hundred name.
+
+        let hundredSuburbNames = HundredSuburbNames[hundredName.replace(/^HD OF /g, "").trim().toLowerCase()];  // converts "HD OF NAPPERBY" to "NAPPERBY"
+
+        if (streetSuburbNames === undefined && hundredSuburbNames === undefined)
+            return "";  // a suburb cannot be determined, the address is invalid
+        else if (streetSuburbNames !== undefined && streetSuburbNames.length === 1)
+            suburbName = streetSuburbNames[0];  // exactly one match (this is the best choice)
+        else if (hundredSuburbNames !== undefined && hundredSuburbNames.length === 1)
+            suburbName = hundredSuburbNames[0];  // exactly one match (this is the best choice)
+        else if (streetSuburbNames !== undefined && hundredSuburbNames === undefined)
+            suburbName = streetSuburbNames[0];  // there are multiple suburbs, arbitrarily choose the first
+        else if (streetSuburbNames === undefined && hundredSuburbNames !== undefined)
+            suburbName = hundredSuburbNames[0];  // there are multiple suburbs, arbitrarily choose the first
+        else {
+            // Determine the intersection of the two arrays of suburb names and arbitrarily choose
+            // the first suburb.  If the intersection is empty then arbitrarily choose the first
+            // suburb associated with the street.
+
+            let intersectingSuburbNames = streetSuburbNames.filter(suburbName => hundredSuburbNames.indexOf(suburbName) >= 0);
+            suburbName = (intersectingSuburbNames.length > 0) ? intersectingSuburbNames[0] : streetSuburbNames[0];
         }
-        
-        // Try to determine the suburb name.  Use the hundred name if necessary.
     }
 
-    // Lookup the street name.  Zero, one or multiple suburbs may result.
+    // The address is considered invalid if a suburb name could not be determined.
 
-    let streetNames = StreetNames[streetName];
-    if (streetNames.length === 0) {
-        // Attempt to use the street name suffixes.
-        let tokens = streetName.split(" ");
-        let streetSuffixAbbreviation = tokens[tokens.length - 1].toLowerCase();
-        let streetSuffix = StreetSuffixes[streetSuffixAbbreviation];
-    }
-
-
-
-    if (streetNames.length === 0) {
-
-    } else if (streetNames.length === 1) {
-
-    } else {
-        // Attempt to use the hundred name
-    }
-
-
-
-    // Lookup the suburb name
-
-    if (suburbName.length >= " SA NNNN".length && / SA [0-9]{4}/.test(suburbName.substring(address.length - " SA NNNN".length))) { // for example, "SA 5240"
-        // The suburb name is already valid.
-    } else {
-        suburbName = SuburbNames[suburbName.toLowerCase()];  // adds the state and postcode to the suburub
-        if (suburbName === undefined) {  // unrecognised suburb name
-            // check if there is a hundred name; if so, get all of the possible suburbs and use them with the street name
-        }
-        
-        // Try to determine the suburb name.  Use the hundred name if necessary.
-    }
-
-
-
-
-    suburbName = suburbName.trim().replace(/\s\s+/g, " ");  // replace multiple whitespace characters with a single space
-
-    address = address.trim().replace(/\s\s+/g, " ");  // replace multiple whitespace characters with a single space
-    if (address === "")
-        return address;  // cannot do anything with a blank address
-    if (address.length >= " SA NNNN".length && / SA [0-9]{4}/.test(address.substring(address.length - " SA NNNN".length)))  // for example, "SA 5240"
-        return address;
-
-    // Attempt to match a known suburb to the trailing text.
-
-    let tokens = address.trim().split(/\s+/);
-    let suburbName = "";
-    for (let index = 0; index < 4; index++) {  // keep adding to the suburb name (from the right hand side of the address) until it is recognised
-        let token = tokens.pop();
-        if (index === 0 && token === "SA")  // ignore "SA" on the end of an address such as "11 FRENCH STREET, PORT PIRIE SA"
-            continue;
-        suburbName = (token || "") + ((suburbName === "") ? "" : " ") + suburbName;
-        let suburbNameAndPostCode = SuburbNamesAndPostCodes[suburbName];
-        if (suburbNameAndPostCode)  // found a match
-            return tokens.join(" ").replace(/,$/, "") + ", " + suburbNameAndPostCode;  // expands the suburb name to a suburb name, state and post code
-    }
-
-    return address.replace(/,$/, "") + ", PORT PIRIE SA 5540";  // fallback if unrecognised
+    if (suburbName === "")
+        return "";
+    else if (houseNumber === "" && streetName === "")
+        return suburbName.trim();
+    else        
+        return ((houseNumber + " " + streetName).trim() + ", " + suburbName).trim();
 }
 
-// Parses the development applications.
+// Reads all the address information into global objects.
 
-async function main() {
-    // Ensure that the database exists.
-
-    let database = await initializeDatabase();
-
-    // Obtain all address information.
-
-    StreetNames = {}
+function readAddressInformation() {
+    StreetAndSuburbNames = {}
     for (let line of fs.readFileSync("streetnames.txt").toString().replace(/\r/g, "").trim().split("\n")) {
-        let streetTokens = line.split(",");
-        let streetName = streetTokens[0].trim().toLowerCase();
-        let suburbName = streetTokens[1].trim();
-        if (StreetNames[streetName] === undefined)
-            StreetNames[streetName] = [];
-        StreetNames[streetName].push(suburbName);  // several suburbs may exist for the same street name
+        let streetNameTokens = line.split(",");
+        let streetName = streetNameTokens[0].trim().toLowerCase();
+        let suburbName = streetNameTokens[1].trim();
+        if (StreetAndSuburbNames[streetName] === undefined)
+            StreetAndSuburbNames[streetName] = [];
+        StreetAndSuburbNames[streetName].push(suburbName);  // several suburbs may exist for the same street name
     }
 
     StreetSuffixes = {};
@@ -175,19 +181,31 @@ async function main() {
     }
 
     SuburbNames = {};
-    HundredNames = {};
+    HundredSuburbNames = {};
     for (let line of fs.readFileSync("suburbnames.txt").toString().replace(/\r/g, "").trim().split("\n")) {
         let suburbTokens = line.split(",");
         let suburbName = suburbTokens[0].trim().toLowerCase();
         let suburbStateAndPostCode = suburbTokens[1].trim();
         SuburbNames[suburbName] = suburbStateAndPostCode;
         for (let hundredName of suburbTokens[2].split(";")) {
-            hundredName = hundredName.toLowerCase();
-            if (HundredNames[hundredName] === undefined)
-                HundredNames[hundredName] = [];
-            HundredNames[hundredName].push(suburbStateAndPostCode);  // several sububs may exist for the same suburb name
+            hundredName = hundredName.trim().toLowerCase();
+            if (HundredSuburbNames[hundredName] === undefined)
+                HundredSuburbNames[hundredName] = [];
+            HundredSuburbNames[hundredName].push(suburbStateAndPostCode);  // several suburbs may exist for the same hundred name
         }
     }
+}
+
+// Parses the development applications.
+
+async function main() {
+    // Ensure that the database exists.
+
+    let database = await initializeDatabase();
+
+    // Read all street, street suffix, suburb, state, post code and hundred information.
+
+    readAddressInformation();
 
     // Retrieve the page contains the links to the PDFs.
 
@@ -266,7 +284,7 @@ async function main() {
                         }
                     } else if (developmentApplication !== null) {
                         if (text.startsWith("property house no") && row.length >= 2 && row[1].trim() !== "0" && row[1].trim().toLowerCase() !== "building conditions") {
-                            developmentApplication.houseNumber = row[1].trim();
+                            developmentApplication.houseNumber = row[1].replace(/\+ü/g, " ").replace(/ü/g, " ").trim();
                         } else if (text.startsWith("property street") && row.length >= 2 && row[1].trim() !== "0" && row[1].replace(/ü/g, " ").toUpperCase() === row[1].replace(/ü/g, " ")) {
                             developmentApplication.streetName = row[1].replace(/\+ü/g, " ").replace(/ü/g, " ").trim();
                         } else if (text.startsWith("property suburb") && row.length >= 2 && row[1].trim() !== "0" && row[1].trim().toLowerCase() != "lodgement fee - base amount" && row[1] === row[1].toUpperCase()) {
