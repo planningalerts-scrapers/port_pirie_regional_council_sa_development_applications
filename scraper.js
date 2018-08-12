@@ -12,9 +12,17 @@ let sqlite3 = require("sqlite3").verbose();
 let pdf2json = require("pdf2json");
 let urlparser = require("url");
 let moment = require("moment");
+let fs = require("fs");
 
 const DevelopmentApplicationsUrl = "http://www.pirie.sa.gov.au/page.aspx?u=646#.W2REvfZuKUl";
 const CommentUrl = "mailto:council@pirie.sa.gov.au";
+
+// Address information.
+
+let StreetAndSuburbNames = null;
+let StreetSuffixes = null;
+let SuburbNames = null;
+let HundredSuburbNames = null;
 
 // Sets up an sqlite database.
 
@@ -59,12 +67,145 @@ async function insertRow(database, developmentApplication) {
     });
 }
 
+// Format the address, ensuring that it has a valid suburb, state and post code.
+
+function formatAddress(houseNumber, streetName, suburbName, hundredName) {
+    houseNumber = houseNumber.trim().replace(/\s\s+/g, " ");  // replace multiple whitespace characters with a single space
+    streetName = streetName.trim().replace(/\s\s+/g, " ");  // replace multiple whitespace characters with a single space
+    suburbName = suburbName.trim().replace(/\s\s+/g, " ");  // replace multiple whitespace characters with a single space
+    hundredName = hundredName.trim().replace(/\s\s+/g, " ");  // replace multiple whitespace characters with a single space
+
+    // The address is considered invalid if there is no street name.
+
+    if (streetName === "" || streetName === "0")
+        return "";  // invalid address
+
+    // If the hundred name appears in the street name then blank out the street name.
+
+    if (/^HD /.test(streetName) || /^HUNDRED /.test(streetName))  // for example, "HD NAPPERBY" or "HUNDRED WANDEARAH"
+        streetName = "";
+
+    // Remove the text "(NAP)" that appears in some street names.
+
+    streetName = streetName.replace(/\(NAP\) /g, "");
+
+    // Change "ROA" to "ROAD" that appears as the suffix of some street names.
+
+    streetName = streetName.replace(/ ROA$/g, " ROAD");
+
+    // Attempt to expand any street suffix abbreviations.  For example, "St" becomes "Street".
+    // Also remove any duplicated items that appear in the street, such as "STREET STREET".
+
+    let streetNameTokens = streetName.split(" ");
+
+    if (streetNameTokens.length >= 2 && streetNameTokens[0] === streetNameTokens[1])
+        streetNameTokens.shift();
+    if (streetNameTokens.length >= 2 && streetNameTokens[streetNameTokens.length - 2] === streetNameTokens[streetNameTokens.length - 1])
+        streetNameTokens.pop();
+
+    let streetSuffixAbbreviation = streetNameTokens[streetNameTokens.length - 1] || "";
+    let streetSuffix = StreetSuffixes[streetSuffixAbbreviation.toLowerCase()];
+    if (streetSuffix !== undefined)
+        streetNameTokens[streetNameTokens.length - 1] = (streetSuffixAbbreviation === streetSuffixAbbreviation.toUpperCase()) ? streetSuffix.toUpperCase() : streetSuffix;
+
+    streetName = streetNameTokens.join(" ");
+
+    // Ensure that the suburb exists and that it includes a state and a post code.  For example,
+    // "PIRIE SA 5240".
+
+    if (!/ SA [0-9]{4}$/.test(suburbName))
+        suburbName = SuburbNames[suburbName.toLowerCase()] || "";
+
+    // If the suburb was not determined then attempt to derive the suburb by using a combination
+    // of the suburbs determined based on the street name and the suburbs determined based on the
+    // hundred name.
+
+    if (suburbName === "") {
+        // Obtain the suburbs associated with the street, if it exists.  Note that there may be
+        // more than one suburb because the same street can pass through multiple suburbs and
+        // the same street name can be used in non-adjoining suburbs).
+
+        let streetSuburbNames = StreetAndSuburbNames[streetName.toLowerCase()];
+
+        // Obtain the suburbs associated with any hundred name.
+
+        let hundredSuburbNames = HundredSuburbNames[hundredName.replace(/^HD OF /g, "").trim().toLowerCase()];  // converts "HD OF NAPPERBY" to "NAPPERBY"
+
+        if (streetSuburbNames === undefined && hundredSuburbNames === undefined)
+            return "";  // a suburb cannot be determined, the address is invalid
+        else if (streetSuburbNames !== undefined && streetSuburbNames.length === 1)
+            suburbName = streetSuburbNames[0];  // exactly one match (this is the best choice)
+        else if (hundredSuburbNames !== undefined && hundredSuburbNames.length === 1)
+            suburbName = hundredSuburbNames[0];  // exactly one match (this is the best choice)
+        else if (streetSuburbNames !== undefined && hundredSuburbNames === undefined)
+            suburbName = streetSuburbNames[0];  // there are multiple suburbs, arbitrarily choose the first
+        else if (streetSuburbNames === undefined && hundredSuburbNames !== undefined)
+            suburbName = hundredSuburbNames[0];  // there are multiple suburbs, arbitrarily choose the first
+        else {
+            // Determine the intersection of the two arrays of suburb names and arbitrarily choose
+            // the first suburb.  If the intersection is empty then arbitrarily choose the first
+            // suburb associated with the street.
+
+            let intersectingSuburbNames = streetSuburbNames.filter(suburbName => hundredSuburbNames.indexOf(suburbName) >= 0);
+            suburbName = (intersectingSuburbNames.length > 0) ? intersectingSuburbNames[0] : streetSuburbNames[0];
+        }
+    }
+
+    // The address is considered invalid if a suburb name could not be determined.
+
+    if (suburbName === "")
+        return "";
+    else if (houseNumber === "" && streetName === "")
+        return suburbName.trim();
+    else        
+        return ((houseNumber + " " + streetName).trim() + ", " + suburbName).trim();
+}
+
+// Reads all the address information into global objects.
+
+function readAddressInformation() {
+    StreetAndSuburbNames = {}
+    for (let line of fs.readFileSync("streetnames.txt").toString().replace(/\r/g, "").trim().split("\n")) {
+        let streetNameTokens = line.split(",");
+        let streetName = streetNameTokens[0].trim().toLowerCase();
+        let suburbName = streetNameTokens[1].trim();
+        if (StreetAndSuburbNames[streetName] === undefined)
+            StreetAndSuburbNames[streetName] = [];
+        StreetAndSuburbNames[streetName].push(suburbName);  // several suburbs may exist for the same street name
+    }
+
+    StreetSuffixes = {};
+    for (let line of fs.readFileSync("streetsuffixes.txt").toString().replace(/\r/g, "").trim().split("\n")) {
+        let streetSuffixTokens = line.split(",");
+        StreetSuffixes[streetSuffixTokens[0].trim().toLowerCase()] = streetSuffixTokens[1].trim();
+    }
+
+    SuburbNames = {};
+    HundredSuburbNames = {};
+    for (let line of fs.readFileSync("suburbnames.txt").toString().replace(/\r/g, "").trim().split("\n")) {
+        let suburbTokens = line.split(",");
+        let suburbName = suburbTokens[0].trim().toLowerCase();
+        let suburbStateAndPostCode = suburbTokens[1].trim();
+        SuburbNames[suburbName] = suburbStateAndPostCode;
+        for (let hundredName of suburbTokens[2].split(";")) {
+            hundredName = hundredName.trim().toLowerCase();
+            if (HundredSuburbNames[hundredName] === undefined)
+                HundredSuburbNames[hundredName] = [];
+            HundredSuburbNames[hundredName].push(suburbStateAndPostCode);  // several suburbs may exist for the same hundred name
+        }
+    }
+}
+
 // Parses the development applications.
 
 async function main() {
     // Ensure that the database exists.
 
     let database = await initializeDatabase();
+
+    // Read all street, street suffix, suburb, state, post code and hundred information.
+
+    readAddressInformation();
 
     // Retrieve the page contains the links to the PDFs.
 
@@ -126,7 +267,11 @@ async function main() {
                             informationUrl : pdfUrl,
                             commentUrl: CommentUrl,
                             scrapeDate : moment().format("YYYY-MM-DD"),
-                            receivedDate: ""
+                            receivedDate: "",
+                            houseNumber: "",
+                            streetName: "",
+                            suburbName: "",
+                            hundredName: ""
                         }
                         developmentApplications.push(developmentApplication);
                         isReason = false;
@@ -139,11 +284,13 @@ async function main() {
                         }
                     } else if (developmentApplication !== null) {
                         if (text.startsWith("property house no") && row.length >= 2 && row[1].trim() !== "0" && row[1].trim().toLowerCase() !== "building conditions") {
-                            developmentApplication.address += ((developmentApplication.address === "") ? "" : " ") + row[1].trim();
-                        } else if (text.startsWith("property street") && row.length >= 2 && row[1].toUpperCase() === row[1] && row[1].trim() !== "0") {
-                            developmentApplication.address += ((developmentApplication.address === "") ? "" : " ") + row[1].trim();
-                        } else if (text.startsWith("property suburb") && row.length >= 2 && row[1].trim() !== "0" && row[1].trim().toLowerCase() !== "lodgement fee - base amount") {
-                            developmentApplication.address += ((developmentApplication.address === "") ? "" : ", ") + ((row[1].trim() === "" || row[1].toUpperCase() !== row[1]) ? "PORT PIRIE" : row[1].trim());
+                            developmentApplication.houseNumber = row[1].replace(/\+ü/g, " ").replace(/ü/g, " ").trim();
+                        } else if (text.startsWith("property street") && row.length >= 2 && row[1].trim() !== "0" && row[1].replace(/ü/g, " ").toUpperCase() === row[1].replace(/ü/g, " ")) {
+                            developmentApplication.streetName = row[1].replace(/\+ü/g, " ").replace(/ü/g, " ").trim();
+                        } else if (text.startsWith("property suburb") && row.length >= 2 && row[1].trim() !== "0" && row[1].trim().toLowerCase() != "lodgement fee - base amount" && row[1] === row[1].toUpperCase()) {
+                            developmentApplication.suburbName = row[1].trim();
+                        } else if (text.startsWith("hundred") && row.length >= 2 && row[1].trim() !== "0" && !row[1].trim().startsWith("$") && row[1] === row[1].toUpperCase()) {
+                            developmentApplication.hundredName = row[1].trim();
                         } else if (text.startsWith("development description")) {
                             isReason = true;
                         } else if (isReason && text.startsWith("private certifier name")) {
@@ -156,8 +303,11 @@ async function main() {
                 }
 
                 for (let developmentApplication of developmentApplications) {
-                    developmentApplication.address = developmentApplication.address.trim().replace(/\+ü/g, " ").replace(/ü/g, " ").replace(/\s\s+/g, " ");
-                    await insertRow(database, developmentApplication);
+                    developmentApplication.address = formatAddress(developmentApplication.houseNumber, developmentApplication.streetName, developmentApplication.suburbName, developmentApplication.hundredName).trim().replace(/\s\s+/g, " ");
+                    if (developmentApplication.reason.trim() === "")
+                        developmentApplication.reason = "No description provided";
+                    if (developmentApplication.applicationNumber.trim() !== "" && developmentApplication.address.trim() !== "")
+                        await insertRow(database, developmentApplication);
                 }
 
                 console.log(`Parsed document: ${pdfUrl}`);
