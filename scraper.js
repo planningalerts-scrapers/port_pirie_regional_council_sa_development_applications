@@ -306,6 +306,7 @@ async function main() {
                     developmentApplication.address = formatAddress(developmentApplication.houseNumber, developmentApplication.streetName, developmentApplication.suburbName, developmentApplication.hundredName).trim().replace(/\s\s+/g, " ");
                     developmentApplication.address = developmentApplication.address.replace("\r", " ").replace("\n", " ");
                     developmentApplication.reason = developmentApplication.reason.replace("\r", " ").replace("\n", " ");
+                    developmentApplication.applicationNumber = developmentApplication.applicationNumber.replace("\r", " ").replace("\n", " ");
                     if (developmentApplication.reason.trim() === "")
                         developmentApplication.reason = "NO DESCRIPTION PROVIDED";
                     if (developmentApplication.applicationNumber.trim() !== "" && developmentApplication.address.trim() !== "")
