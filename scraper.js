@@ -304,7 +304,7 @@ async function main() {
 
                 for (let developmentApplication of developmentApplications) {
                     developmentApplication.address = formatAddress(developmentApplication.houseNumber, developmentApplication.streetName, developmentApplication.suburbName, developmentApplication.hundredName).trim().replace(/\s\s+/g, " ");
-                    if (developmentApplication.reason.trim() === "")
+                    if (developmentApplication.reason.replace("\r", " ").replace("\n", " ").trim() === "")
                         developmentApplication.reason = "NO DESCRIPTION PROVIDED";
                     if (developmentApplication.applicationNumber.trim() !== "" && developmentApplication.address.trim() !== "")
                         await insertRow(database, developmentApplication);
