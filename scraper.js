@@ -233,6 +233,8 @@ async function main() {
     selectedPdfUrls.push(pdfUrls.shift());
     if (pdfUrls.length > 0)
         selectedPdfUrls.push(pdfUrls[getRandom(1, pdfUrls.length)]);
+    if (getRandom(0, 2) === 0)
+        selectedPdfUrls.reverse();
 
     for (let pdfUrl of selectedPdfUrls) {
         console.log(`Retrieving document: ${pdfUrl}`);
@@ -304,9 +306,9 @@ async function main() {
 
                 for (let developmentApplication of developmentApplications) {
                     developmentApplication.address = formatAddress(developmentApplication.houseNumber, developmentApplication.streetName, developmentApplication.suburbName, developmentApplication.hundredName).trim().replace(/\s\s+/g, " ");
-                    developmentApplication.address = developmentApplication.address.replace("\r", " ").replace("\n", " ");
-                    developmentApplication.reason = developmentApplication.reason.replace("\r", " ").replace("\n", " ");
-                    developmentApplication.applicationNumber = developmentApplication.applicationNumber.replace("\r", " ").replace("\n", " ");
+                    developmentApplication.address = developmentApplication.address.trim();
+                    developmentApplication.reason = developmentApplication.reason.trim();
+                    developmentApplication.applicationNumber = developmentApplication.applicationNumber.trim();
                     if (developmentApplication.reason.trim() === "")
                         developmentApplication.reason = "NO DESCRIPTION PROVIDED";
                     if (developmentApplication.applicationNumber.trim() !== "" && developmentApplication.address.trim() !== "")
