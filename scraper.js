@@ -44,7 +44,7 @@ async function insertRow(database, developmentApplication) {
         sqlStatement.run([
             developmentApplication.applicationNumber,
             developmentApplication.address,
-            developmentApplication.reason,
+            developmentApplication.description,
             developmentApplication.informationUrl,
             developmentApplication.commentUrl,
             developmentApplication.scrapeDate,
@@ -57,9 +57,9 @@ async function insertRow(database, developmentApplication) {
                 reject(error);
             } else {
                 if (this.changes > 0)
-                    console.log(`    Inserted: application \"${developmentApplication.applicationNumber}\" with address \"${developmentApplication.address}\" and reason \"${developmentApplication.reason}\" into the database.`);
+                    console.log(`    Inserted: application \"${developmentApplication.applicationNumber}\" with address \"${developmentApplication.address}\" and description \"${developmentApplication.description}\" into the database.`);
                 else
-                    console.log(`    Skipped: application \"${developmentApplication.applicationNumber}\" with address \"${developmentApplication.address}\" and reason \"${developmentApplication.reason}\" because it was already present in the database.`);
+                    console.log(`    Skipped: application \"${developmentApplication.applicationNumber}\" with address \"${developmentApplication.address}\" and description \"${developmentApplication.description}\" because it was already present in the database.`);
                 sqlStatement.finalize();  // releases any locks
                 resolve(row);
             }
@@ -210,14 +210,7 @@ async function main() {
     // Retrieve the page contains the links to the PDFs.
 
     console.log(`Retrieving page: ${DevelopmentApplicationsUrl}`);
-    let body = await request({
-        url: DevelopmentApplicationsUrl,
-        proxy: process.env.MORPH_PROXY,
-        headers: {
-            "Connection": "keep-alive",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/17.17134"
-        }
-    });
+    let body = await request({ url: DevelopmentApplicationsUrl, proxy: process.env.MORPH_PROXY });
     let $ = cheerio.load(body);
 
     let pdfUrls = [];
@@ -250,15 +243,7 @@ async function main() {
         // strings, being the text that has been parsed from the PDF.
 
         let pdfParser = new pdf2json();
-        let pdfPipe = request({
-            url: pdfUrl,
-            proxy: process.env.MORPH_PROXY,
-            encoding: null,
-            headers: {
-                "Connection": "keep-alive",
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/17.17134"
-            }
-        }).pipe(pdfParser);
+        let pdfPipe = request({ url: pdfUrl, proxy: process.env.MORPH_PROXY, encoding: null }).pipe(pdfParser);
         pdfPipe.on("pdfParser_dataError", error => {
             console.log("In pdfParser_dataError catch.");
             console.log(error);
@@ -272,7 +257,7 @@ async function main() {
 
                 let developmentApplications = [];
                 let developmentApplication = null;
-                let isReason = false;
+                let isDescription = false;
 
                 for (let row of rows) {
                     let text = (row.length === 0) ? "" : row[0].trim().toLowerCase();
@@ -280,7 +265,7 @@ async function main() {
                         developmentApplication = {
                             applicationNumber: row[1].trim(),
                             address: "",
-                            reason: "",
+                            description: "",
                             informationUrl : pdfUrl,
                             commentUrl: CommentUrl,
                             scrapeDate : moment().format("YYYY-MM-DD"),
@@ -291,7 +276,7 @@ async function main() {
                             hundredName: ""
                         }
                         developmentApplications.push(developmentApplication);
-                        isReason = false;
+                        isDescription = false;
                         for (let index = 2; index < row.length; index++) {
                             let receivedDate = moment(row[index].trim(), "D/MM/YYYY", true);  // allows the leading zero of the day to be omitted
                             if (receivedDate.isValid()) {
@@ -309,12 +294,12 @@ async function main() {
                         } else if (text.startsWith("hundred") && row.length >= 2 && row[1].trim() !== "0" && !row[1].trim().startsWith("$") && row[1] === row[1].toUpperCase()) {
                             developmentApplication.hundredName = row[1].trim();
                         } else if (text.startsWith("development description")) {
-                            isReason = true;
-                        } else if (isReason && text.startsWith("private certifier name")) {
-                            isReason = false;
+                            isDescription = true;
+                        } else if (isDescription && text.startsWith("private certifier name")) {
+                            isDescription = false;
                             developmentApplication = null;
-                        } else if (isReason && row.length >= 1 && row[0].toUpperCase() === row[0]) {
-                            developmentApplication.reason += ((developmentApplication.reason === "") ? "" : " ") + row[0].trim();
+                        } else if (isDescription && row.length >= 1 && row[0].toUpperCase() === row[0]) {
+                            developmentApplication.description += ((developmentApplication.description === "") ? "" : " ") + row[0].trim();
                         }
                     }
                 }
@@ -322,10 +307,10 @@ async function main() {
                 for (let developmentApplication of developmentApplications) {
                     developmentApplication.address = formatAddress(developmentApplication.houseNumber, developmentApplication.streetName, developmentApplication.suburbName, developmentApplication.hundredName).trim().replace(/\s\s+/g, " ");
                     developmentApplication.address = developmentApplication.address.trim();
-                    developmentApplication.reason = developmentApplication.reason.trim();
+                    developmentApplication.description = developmentApplication.description.trim();
                     developmentApplication.applicationNumber = developmentApplication.applicationNumber.trim();
-                    if (developmentApplication.reason.trim() === "")
-                        developmentApplication.reason = "NO DESCRIPTION PROVIDED";
+                    if (developmentApplication.description.trim() === "")
+                        developmentApplication.description = "NO DESCRIPTION PROVIDED";
                     if (developmentApplication.applicationNumber.trim() !== "" && developmentApplication.address.trim() !== "")
                         await insertRow(database, developmentApplication);
                 }
