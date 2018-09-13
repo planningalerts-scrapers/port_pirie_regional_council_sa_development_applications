@@ -210,7 +210,13 @@ async function main() {
     // Retrieve the page contains the links to the PDFs.
 
     console.log(`Retrieving page: ${DevelopmentApplicationsUrl}`);
-    let body = await request({ url: DevelopmentApplicationsUrl, headers: { "Connection": "keep-alive" } });
+    let body = await request({
+        url: DevelopmentApplicationsUrl,
+        headers: {
+            "Connection": "keep-alive",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/17.17134"
+        }
+    });
     let $ = cheerio.load(body);
 
     let pdfUrls = [];
@@ -243,7 +249,14 @@ async function main() {
         // strings, being the text that has been parsed from the PDF.
 
         let pdfParser = new pdf2json();
-        let pdfPipe = request({ url: pdfUrl, encoding: null, headers: { "Connection": "keep-alive" } }).pipe(pdfParser);
+        let pdfPipe = request({
+            url: pdfUrl,
+            encoding: null,
+            headers: {
+                "Connection": "keep-alive",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/17.17134"
+            }
+        }).pipe(pdfParser);
         pdfPipe.on("pdfParser_dataError", error => {
             console.log("In pdfParser_dataError catch.");
             console.log(error);
