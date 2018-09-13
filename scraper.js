@@ -212,6 +212,7 @@ async function main() {
     console.log(`Retrieving page: ${DevelopmentApplicationsUrl}`);
     let body = await request({
         url: DevelopmentApplicationsUrl,
+        proxy: process.env.MORPH_PROXY,
         headers: {
             "Connection": "keep-alive",
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/17.17134"
@@ -251,6 +252,7 @@ async function main() {
         let pdfParser = new pdf2json();
         let pdfPipe = request({
             url: pdfUrl,
+            proxy: process.env.MORPH_PROXY,
             encoding: null,
             headers: {
                 "Connection": "keep-alive",
