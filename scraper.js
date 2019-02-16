@@ -214,10 +214,11 @@ async function main() {
     let $ = cheerio.load(body);
 
     let pdfUrls = [];
-    for (let element of $("a[href$='.pdf']").get()) {
+    for (let element of $("a").get()) {
         let pdfUrl = new urlparser.URL(element.attribs.href, DevelopmentApplicationsUrl).href;
-        if (!pdfUrls.some(url => url === pdfUrl))
-            pdfUrls.push(pdfUrl);
+        if (pdfUrl.toLowerCase().includes(".pdf"))
+            if (!pdfUrls.some(url => url === pdfUrl))
+                pdfUrls.push(pdfUrl);
     }
 
     if (pdfUrls.length === 0) {
@@ -232,7 +233,7 @@ async function main() {
     let selectedPdfUrls = [];
     selectedPdfUrls.push(pdfUrls.shift());
     if (pdfUrls.length > 0)
-        selectedPdfUrls.push(pdfUrls[getRandom(1, pdfUrls.length)]);
+        selectedPdfUrls.push(pdfUrls[getRandom(0, pdfUrls.length)]);
     if (getRandom(0, 2) === 0)
         selectedPdfUrls.reverse();
 
