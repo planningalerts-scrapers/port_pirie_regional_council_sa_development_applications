@@ -14,7 +14,7 @@ let urlparser = require("url");
 let moment = require("moment");
 let fs = require("fs");
 
-const DevelopmentApplicationsUrl = "http://www.pirie.sa.gov.au/page.aspx?u=646#.W2REvfZuKUl";
+const DevelopmentApplicationsUrl = "https://www.pirie.sa.gov.au/what-do-councils-do/development,-building-and-planning/development-application-register?result_57806_result_page={0}";
 const CommentUrl = "mailto:council@pirie.sa.gov.au";
 
 // Address information.
@@ -40,7 +40,7 @@ async function initializeDatabase() {
 
 async function insertRow(database, developmentApplication) {
     return new Promise((resolve, reject) => {
-        let sqlStatement = database.prepare("insert or ignore into [data] values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        let sqlStatement = database.prepare("insert or replace into [data] values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         sqlStatement.run([
             developmentApplication.applicationNumber,
             developmentApplication.address,
@@ -56,10 +56,7 @@ async function insertRow(database, developmentApplication) {
                 console.error(error);
                 reject(error);
             } else {
-                if (this.changes > 0)
-                    console.log(`    Inserted: application \"${developmentApplication.applicationNumber}\" with address \"${developmentApplication.address}\" and description \"${developmentApplication.description}\" into the database.`);
-                else
-                    console.log(`    Skipped: application \"${developmentApplication.applicationNumber}\" with address \"${developmentApplication.address}\" and description \"${developmentApplication.description}\" because it was already present in the database.`);
+                console.log(`    Saved application \"${developmentApplication.applicationNumber}\" with address \"${developmentApplication.address}\" and description \"${developmentApplication.description}\" to the database.`);
                 sqlStatement.finalize();  // releases any locks
                 resolve(row);
             }
@@ -207,24 +204,30 @@ async function main() {
 
     readAddressInformation();
 
-    // Retrieve the page contains the links to the PDFs.
-
-    console.log(`Retrieving page: ${DevelopmentApplicationsUrl}`);
-    let body = await request({ url: DevelopmentApplicationsUrl, proxy: process.env.MORPH_PROXY });
-    let $ = cheerio.load(body);
+    // Retrieve the pages that contain the links to the PDFs.
 
     let pdfUrls = [];
-    for (let element of $("a").get()) {
-        let pdfUrl = new urlparser.URL(element.attribs.href, DevelopmentApplicationsUrl).href;
-        if (pdfUrl.toLowerCase().includes(".pdf"))
-            if (!pdfUrls.some(url => url === pdfUrl))
-                pdfUrls.push(pdfUrl);
+
+    for (let index = 1; index <= 10; index++) {  // search up to 10 pages
+        let url = DevelopmentApplicationsUrl.replace(/\{0\}/g, index.toString());
+        console.log(`Retrieving page: ${url}`);
+
+        let body = await request({ url: url, proxy: process.env.MORPH_PROXY });
+        let $ = cheerio.load(body);
+
+        for (let element of $("h3.generic-list__title a").get()) {
+            let pdfUrl = new urlparser.URL(element.attribs.href, DevelopmentApplicationsUrl).href;
+            if (pdfUrl.toLowerCase().includes(".pdf"))
+                if (!pdfUrls.some(url => url === pdfUrl))
+                    pdfUrls.push(pdfUrl);
+        }
     }
 
     if (pdfUrls.length === 0) {
         console.log("No PDF URLs were found on the page.");
         return;
     }
+    console.log(`Found ${pdfUrls.length} PDF URL(s) on the page.`);
 
     // Select the most recent PDF.  And randomly select one other PDF (avoid processing all PDFs
     // at once because this may use too much memory, resulting in morph.io terminating the current
